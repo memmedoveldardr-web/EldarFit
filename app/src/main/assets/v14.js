@@ -161,8 +161,11 @@
 
   function renderAdditionsForRow(row,day,mi){
     const desc=$('.row-desc',row);if(!desc)return;
-    $$('.v14-plan-item',desc).forEach(x=>x.remove());
     const arr=planAdds()[mealKey(day,mi)]||[];
+    const sig=JSON.stringify(arr.map(a=>[a.id,a.foodId,a.baseAmount,a.measureId,a.measureCount]));
+    if(desc.dataset.v14AddSig===sig)return;
+    desc.dataset.v14AddSig=sig;
+    $('.v14-plan-item',desc).forEach(x=>x.remove());
     arr.forEach(a=>{
       const p=productById(a.foodId);if(!p)return;
       const span=document.createElement('span');
@@ -248,7 +251,8 @@
       let line=$('.meal-macro-v14',main);
       if(!line){line=document.createElement('div');line.className='meal-macro-v14';main.appendChild(line)}
       const m=mealTotals(row);
-      line.textContent=Math.round(m.kcal)+' kcal · P '+fmt(m.p,0)+' · C '+fmt(m.c,0)+' · F '+fmt(m.f,0);
+      const txt=Math.round(m.kcal)+' kcal · P '+fmt(m.p,0)+' · C '+fmt(m.c,0)+' · F '+fmt(m.f,0);
+      if(line.textContent!==txt) line.textContent=txt;
     });
   }
 
@@ -590,9 +594,17 @@
   }
 
   let decorateQueued=false;
+  let decorating=false;
   function scheduleDecorate(){
-    if(decorateQueued)return;decorateQueued=true;
-    requestAnimationFrame(()=>{decorateQueued=false;decorateMeals();injectTopTools();hijackLegacyCustomButton()});
+    if(decorateQueued||decorating)return;
+    decorateQueued=true;
+    requestAnimationFrame(()=>{
+      decorateQueued=false;
+      if(decorating)return;
+      decorating=true;
+      try{decorateMeals();injectTopTools();hijackLegacyCustomButton()}
+      finally{decorating=false}
+    });
   }
 
   function selfTest(){
