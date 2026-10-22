@@ -150,6 +150,28 @@
     return roundQty(best.q);
   }
 
+  function compatibilityScore(source,targetMacros){
+    if(!source||!targetMacros)return 0;
+    const sm=source.macros,cat=source.food.cat;
+    const weights = cat==='protein'
+      ? {kcal:0.30,p:0.55,c:0.05,f:0.10}
+      : cat==='carb'
+      ? {kcal:0.52,p:0.05,c:0.38,f:0.05}
+      : cat==='fat'
+      ? {kcal:0.38,p:0.03,c:0.04,f:0.55}
+      : cat==='fruit'
+      ? {kcal:0.58,p:0.02,c:0.37,f:0.03}
+      : cat==='dairy'
+      ? {kcal:0.34,p:0.38,c:0.14,f:0.14}
+      : {kcal:0.45,p:0.20,c:0.25,f:0.10};
+    const err=
+      weights.kcal*Math.abs(targetMacros.kcal-sm.kcal)/Math.max(80,sm.kcal)+
+      weights.p*Math.abs(targetMacros.p-sm.p)/Math.max(8,sm.p)+
+      weights.c*Math.abs(targetMacros.c-sm.c)/Math.max(12,sm.c)+
+      weights.f*Math.abs(targetMacros.f-sm.f)/Math.max(5,sm.f);
+    return Math.max(0,Math.min(100,Math.round(100-err*100)));
+  }
+
   function fmt(n,d=0){return Number.isFinite(+n)?(+n).toFixed(d):'—'}
   function signed(n,d=0){const v=+n;return (v>=0?'+':'')+v.toFixed(d)}
 
@@ -240,7 +262,8 @@
       const tm=macrosFor(target,qty);
       const b=document.createElement('button');b.className='choice-btn';
       const unit=target.unit==='ml'?'ml':'q';
-      b.innerHTML='<b>'+qty+' '+unit+' '+target.name+'</b><span>'+modeLabel()+' · '+Math.round(tm.kcal)+' kcal · P '+fmt(tm.p,1)+' · C '+fmt(tm.c,1)+' · F '+fmt(tm.f,1)+'</span><div class="macro-diff"><span>Δ kcal '+signed(tm.kcal-source.macros.kcal)+'</span><span>Δ P '+signed(tm.p-source.macros.p,1)+'q</span><span>Δ C '+signed(tm.c-source.macros.c,1)+'q</span><span>Δ F '+signed(tm.f-source.macros.f,1)+'q</span></div>';
+      const score=compatibilityScore(source,tm);
+      b.innerHTML='<b>'+qty+' '+unit+' '+target.name+'</b><span>'+modeLabel()+' · '+Math.round(tm.kcal)+' kcal · P '+fmt(tm.p,1)+' · C '+fmt(tm.c,1)+' · F '+fmt(tm.f,1)+'</span><div class="macro-diff"><span>Δ kcal '+signed(tm.kcal-source.macros.kcal)+'</span><span>Δ P '+signed(tm.p-source.macros.p,1)+'q</span><span>Δ C '+signed(tm.c-source.macros.c,1)+'q</span><span>Δ F '+signed(tm.f-source.macros.f,1)+'q</span></div><div class="match-score">Uyğunluq: '+score+'%</div>';
       b.onclick=()=>{
         const sw=foodSwapMap();
         sw[key]={original:originalText,resultFood:id,qty,display:qty+' '+unit+' '+target.name,macros:tm,mode};
@@ -416,7 +439,8 @@
     activeDay: activeDay,
     mode: function(){ return mode; },
     modeLabel: modeLabel,
-    roundQty: roundQty
+    roundQty: roundQty,
+    compatibilityScore: compatibilityScore
   };
 
   setTimeout(()=>{captureAndDecorate();enhanceExerciseHistory();syncMode();syncEquip()},120);
