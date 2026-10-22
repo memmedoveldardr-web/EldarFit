@@ -6,6 +6,12 @@
   const get=(k,f)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):f}catch(e){return f}};
   const set=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
 
+  // v1.1 qida-swap sistemi v1.2+ ilə paralel işləməsin.
+  if(!localStorage.getItem('legacySwapMigration_v14')){
+    localStorage.removeItem('foodSwaps_v11');
+    localStorage.setItem('legacySwapMigration_v14','1');
+  }
+
   const FOOD={
     egg:{name:'Yumurta',cat:'protein',unit:'ədəd',perUnit:{kcal:72,p:6.3,c:0.4,f:4.8},aliases:['yumurta']},
     oats:{name:'Yulaf',cat:'carb',unit:'q',m:{kcal:389,p:16.9,c:66.3,f:6.9},aliases:['yulaf']},
@@ -209,8 +215,11 @@
         chip.dataset.v12original=originals[key];
         const sw=swaps[key];
         if(sw){
-          chip.innerHTML=sw.display+'<small>↔</small>';
-          chip.classList.add('swapped');
+          const wanted=sw.display+'<small>↔</small>';
+          if(chip.innerHTML!==wanted) chip.innerHTML=wanted;
+          if(!chip.classList.contains('swapped')) chip.classList.add('swapped');
+        } else if(chip.classList.contains('swapped')){
+          chip.classList.remove('swapped');
         }
       });
     });
@@ -431,6 +440,7 @@
 
 
   window.EldarFitNutrition = {
+    stabilityVersion: '1.3.1',
     allFoods: allFoods,
     parseFood: parseFood,
     macrosFor: macrosFor,
