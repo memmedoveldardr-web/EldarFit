@@ -60,10 +60,10 @@ jobs:
             adb install -r app/build/outputs/apk/debug/app-debug.apk
             adb install -r app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
             echo "=== ONLINE FUNCTION + USDA TESTS ==="
-            ONLINE_OUT="$(adb shell am instrument -w -e class com.eldarfit.app.OnlineAppTest com.eldarfit.app.test/androidx.test.runner.AndroidJUnitRunner)"
-            printf '%s\n' "$ONLINE_OUT" | tee /tmp/online-tests.log
-            printf '%s\n' "$ONLINE_OUT" | grep -q "OK (5 tests)"
-            if printf '%s\n' "$ONLINE_OUT" | grep -q "FAILURES!!!"; then exit 1; fi
+            adb shell am instrument -w -e class com.eldarfit.app.OnlineAppTest com.eldarfit.app.test/androidx.test.runner.AndroidJUnitRunner > /tmp/online-tests.log 2>&1
+            cat /tmp/online-tests.log
+            grep -q "OK (5 tests)" /tmp/online-tests.log
+            if grep -q "FAILURES!!!" /tmp/online-tests.log; then exit 1; fi
             echo "=== DISABLE NETWORK ==="
             adb shell cmd connectivity airplane-mode enable || true
             adb shell svc wifi disable || true
@@ -71,7 +71,7 @@ jobs:
             sleep 3
             adb shell am force-stop com.eldarfit.app
             echo "=== OFFLINE FUNCTION TESTS ==="
-            OFFLINE_OUT="$(adb shell am instrument -w -e class com.eldarfit.app.OfflineAppTest com.eldarfit.app.test/androidx.test.runner.AndroidJUnitRunner)"
-            printf '%s\n' "$OFFLINE_OUT" | tee /tmp/offline-tests.log
-            printf '%s\n' "$OFFLINE_OUT" | grep -q "OK (1 test)"
-            if printf '%s\n' "$OFFLINE_OUT" | grep -q "FAILURES!!!"; then exit 1; fi
+            adb shell am instrument -w -e class com.eldarfit.app.OfflineAppTest com.eldarfit.app.test/androidx.test.runner.AndroidJUnitRunner > /tmp/offline-tests.log 2>&1
+            cat /tmp/offline-tests.log
+            grep -q "OK (1 test)" /tmp/offline-tests.log
+            if grep -q "FAILURES!!!" /tmp/offline-tests.log; then exit 1; fi
