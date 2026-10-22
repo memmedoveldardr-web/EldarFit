@@ -122,15 +122,29 @@
     const sm=source.macros, tm=target.m;
     if(mode==='calorie') return roundQty(sm.kcal/(tm.kcal/100));
     if(mode==='protein' && tm.p>0) return roundQty(sm.p/(tm.p/100));
+
+    const cat=source.food.cat;
+    const weights = cat==='protein'
+      ? {kcal:0.30,p:0.55,c:0.05,f:0.10}
+      : cat==='carb'
+      ? {kcal:0.52,p:0.05,c:0.38,f:0.05}
+      : cat==='fat'
+      ? {kcal:0.38,p:0.03,c:0.04,f:0.55}
+      : cat==='fruit'
+      ? {kcal:0.58,p:0.02,c:0.37,f:0.03}
+      : cat==='dairy'
+      ? {kcal:0.34,p:0.38,c:0.14,f:0.14}
+      : {kcal:0.45,p:0.20,c:0.25,f:0.10};
+
     let best={q:100,score:Infinity};
-    const max=source.food.cat==='fruit'||source.food.cat==='carb'?700:450;
+    const max=cat==='fruit'||cat==='carb'?700:450;
     for(let q=5;q<=max;q+=5){
       const m=macrosFor(target,q);
       const score=
-        0.38*Math.abs(m.kcal-sm.kcal)/Math.max(80,sm.kcal)+
-        0.28*Math.abs(m.p-sm.p)/Math.max(8,sm.p)+
-        0.22*Math.abs(m.c-sm.c)/Math.max(12,sm.c)+
-        0.12*Math.abs(m.f-sm.f)/Math.max(5,sm.f);
+        weights.kcal*Math.abs(m.kcal-sm.kcal)/Math.max(80,sm.kcal)+
+        weights.p*Math.abs(m.p-sm.p)/Math.max(8,sm.p)+
+        weights.c*Math.abs(m.c-sm.c)/Math.max(12,sm.c)+
+        weights.f*Math.abs(m.f-sm.f)/Math.max(5,sm.f);
       if(score<best.score)best={q,score};
     }
     return roundQty(best.q);
@@ -391,6 +405,19 @@
   obs.observe($('#exerciseList'),{childList:true,subtree:true});
   $('#dayTabs').addEventListener('click',()=>setTimeout(captureAndDecorate,30));
   $('#workoutTabs').addEventListener('click',()=>setTimeout(enhanceExerciseHistory,30));
+
+
+  window.EldarFitNutrition = {
+    allFoods: allFoods,
+    parseFood: parseFood,
+    macrosFor: macrosFor,
+    matchQty: matchQty,
+    foodSwaps: foodSwapMap,
+    activeDay: activeDay,
+    mode: function(){ return mode; },
+    modeLabel: modeLabel,
+    roundQty: roundQty
+  };
 
   setTimeout(()=>{captureAndDecorate();enhanceExerciseHistory();syncMode();syncEquip()},120);
 })();
