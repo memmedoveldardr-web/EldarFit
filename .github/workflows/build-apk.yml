@@ -21,6 +21,7 @@ jobs:
           node --check app/src/main/assets/enhancements.js
           node --check app/src/main/assets/v12.js
           node --check app/src/main/assets/v13.js
+          node --check app/src/main/assets/v14.js
       - run: gradle assembleDebug
       - uses: actions/upload-artifact@v4
         with:
