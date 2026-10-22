@@ -28,6 +28,15 @@
         <div class="ring" aria-label="Recomposition hədəfi"><div>69–70<span>kq</span></div></div>
       </div>
 
+      <div class="card today-card">
+        <div>
+          <div class="eyebrow">BUGÜNKÜ PLAN</div>
+          <h2 id="todayPlanTitle">—</h2>
+          <div class="sub" id="todayPlanSub">Sistem tarixindən avtomatik seçilir.</div>
+        </div>
+        <button class="compact-btn" id="openTodayPlan">Aç</button>
+      </div>
+
       <div class="two-col">
         <div class="card metric-card"><div class="label">7 günlük orta</div><div class="metric" id="avgWeight">—</div><div class="sub">çəki</div></div>
         <div class="card metric-card"><div class="label">Son bel</div><div class="metric" id="lastWaist">—</div><div class="sub">sm</div></div>
@@ -53,18 +62,24 @@
 
     <section class="page" data-page="food">
       <div class="section-head sticky-head"><div><div class="eyebrow">7 GÜNLÜK PLAN</div><h2 id="foodTitle">1-ci gün</h2></div><div class="progress-label" id="mealProgress">0/5</div></div>
+      <div class="auto-banner">
+        <div><b id="autoDayLabel">Avtomatik gün</b><span id="autoDayDate"></span></div>
+        <button class="text-btn" id="jumpTodayFood">Bugünə qayıt</button>
+      </div>
       <div class="day-tabs" id="dayTabs"></div>
       <div class="progress"><span id="mealBar"></span></div>
       <div class="card" id="mealList"></div>
       <div class="card">
-        <h3>Sürətli əvəzləmələr</h3>
+        <h3>Ağıllı əvəzləmə</h3>
+        <p class="sub">Yeməkdə əvəz etmək istədiyin qidanın üzərinə toxun. Proqram eyni funksiyaya və mümkün qədər yaxın kalori/protein profilinə uyğun alternativlər göstərəcək.</p>
         <div class="swap-grid">
-          <div><b>Yunan yoqurtu</b><span>30 q whey</span></div>
-          <div><b>85 q bulqur</b><span>≈85 q Borges makaron</span></div>
-          <div><b>120 q banan</b><span>≈180–200 q alma</span></div>
-          <div><b>Kəsmik</b><span>whey / yoqurt / yumurta</span></div>
+          <div><b>Protein</b><span>ət · balıq · süd məhsulu · whey</span></div>
+          <div><b>Karbohidrat</b><span>düyü · bulqur · makaron · kartof</span></div>
+          <div><b>Meyvə</b><span>miqdarı uyğunlaşdırılmış seçim</span></div>
+          <div><b>Yağ</b><span>zeytun yağı · qoz-fındıq</span></div>
         </div>
-        <p class="fineprint">Taxıllar quru çəkidə; ət/balıq/kartof əsasən çiy çəkidədir. 10 q zeytun yağı ≈ 90 kcal.</p>
+        <button class="secondary" id="resetPlanAnchor">Bu günü 1-ci gün et</button>
+        <p class="fineprint">Taxıllar quru çəkidə; ət/balıq/kartof əsasən çiy çəkidədir. Sistem yalnız tarixdən istifadə edir — Calendar icazəsi tələb olunmur.</p>
       </div>
     </section>
 
@@ -78,7 +93,7 @@
         <div class="card mini"><div class="label">İstirahət</div><b>2–3 dəq</b></div>
         <div class="card mini"><div class="label">İzolyasiya</div><b>60–90 san</b></div>
       </div>
-      <div class="card"><h3>Progressive overload</h3><p class="sub">Məsələn 3×8–12-də eyni çəki ilə 12/12/12 və təmiz texnika əldə etdikdə növbəti məşqdə çəkini azca artır.</p></div>
+      <div class="card"><h3>Progressive overload</h3><p class="sub">Hər hərəkətdə “Setləri yaz” bölməsindən çəki və təkrarları saxla. Bütün iş setləri rep aralığının yuxarı həddinə çatdıqda proqram növbəti dəfə çəkini azca artırmağı təklif edəcək.</p></div>
     </section>
 
     <section class="page" data-page="muscles">
@@ -124,6 +139,14 @@
       <p class="fineprint">Rənglər EMG faizi deyil; proqramdakı birbaşa setlər + əsas/dolayı iştirak əsasında nisbi həftəlik yükü göstərir.</p>
     </section>
   </main>
+
+  <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+    <div class="sheet" id="modalSheet" role="dialog" aria-modal="true">
+      <div class="sheet-handle"></div>
+      <div class="sheet-head"><div><div class="eyebrow" id="modalEyebrow">SEÇİM</div><h2 id="modalTitle">—</h2></div><button class="icon-btn" id="closeModal">×</button></div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
 
   <nav class="bottom-nav">
     <button class="active" data-nav="home"><span>⌂</span>İcmal</button>
