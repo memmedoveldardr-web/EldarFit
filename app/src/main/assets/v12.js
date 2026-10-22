@@ -73,7 +73,7 @@
 
   function allFoods(){
     const map={...FOOD};
-    customs().forEach(x=>{map[x.id]={name:x.name,cat:x.cat,unit:x.unit||'q',m:{kcal:+x.kcal,p:+x.p,c:+x.c,f:+x.f},aliases:[x.name.toLowerCase()],custom:true}});
+    customs().forEach(x=>{map[x.id]={name:x.name,cat:x.cat,unit:x.unit||'q',baseUnit:x.baseUnit||((x.unit==='ml')?'ml':'g'),m:{kcal:+x.kcal,p:+x.p,c:+x.c,f:+x.f},aliases:[String(x.name||'').toLowerCase()],custom:true,portions:Array.isArray(x.portions)?x.portions:[],source:x.source||{type:'personal',label:'Şəxsi etiket',priority:400}}});
     return map;
   }
 
@@ -272,7 +272,8 @@
       const b=document.createElement('button');b.className='choice-btn';
       const unit=target.unit==='ml'?'ml':'q';
       const score=compatibilityScore(source,tm);
-      b.innerHTML='<b>'+qty+' '+unit+' '+target.name+'</b><span>'+modeLabel()+' · '+Math.round(tm.kcal)+' kcal · P '+fmt(tm.p,1)+' · C '+fmt(tm.c,1)+' · F '+fmt(tm.f,1)+'</span><div class="macro-diff"><span>Δ kcal '+signed(tm.kcal-source.macros.kcal)+'</span><span>Δ P '+signed(tm.p-source.macros.p,1)+'q</span><span>Δ C '+signed(tm.c-source.macros.c,1)+'q</span><span>Δ F '+signed(tm.f-source.macros.f,1)+'q</span></div><div class="match-score">Uyğunluq: '+score+'%</div>';
+      const sourceLabel=(target.source&&target.source.label)?target.source.label:(target.custom?'Şəxsi məhsul':'Daxili baza');
+      b.innerHTML='<b>'+qty+' '+unit+' '+target.name+'</b><span>'+modeLabel()+' · '+Math.round(tm.kcal)+' kcal · P '+fmt(tm.p,1)+' · C '+fmt(tm.c,1)+' · F '+fmt(tm.f,1)+'</span><div class="macro-diff"><span>Δ kcal '+signed(tm.kcal-source.macros.kcal)+'</span><span>Δ P '+signed(tm.p-source.macros.p,1)+'q</span><span>Δ C '+signed(tm.c-source.macros.c,1)+'q</span><span>Δ F '+signed(tm.f-source.macros.f,1)+'q</span></div><div class="match-score">Uyğunluq: '+score+'% · Mənbə: '+sourceLabel+'</div>';
       b.onclick=()=>{
         const sw=foodSwapMap();
         sw[key]={original:originalText,resultFood:id,qty,display:qty+' '+unit+' '+target.name,macros:tm,mode};
