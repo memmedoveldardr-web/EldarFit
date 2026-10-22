@@ -80,6 +80,14 @@
           <div><span>Karbohidrat</span><b id="macroCarbs">—</b><small>günlük cəm</small></div>
           <div><span>Yağ</span><b id="macroFat">—</b><small>günlük cəm</small></div>
         </div>
+        <div class="plan-actual">
+          <div><span>Plan</span><b id="plannedMacroSummary">—</b></div>
+          <div><span>Faktiki</span><b id="actualMacroSummary">—</b></div>
+        </div>
+      </div>
+      <div class="card smart-adjust-card">
+        <div class="section-head"><div><div class="eyebrow">GÜN SONU DÜZƏLİŞİ</div><h3>Ağıllı tamamlayıcı</h3></div><span class="tag" id="adjustStatus">—</span></div>
+        <div class="sub" id="adjustSuggestion">Bugünkü faktiki qəbul hesablandıqdan sonra burada təklif görünəcək.</div>
       </div>
 
       <div class="card" id="mealList"></div>
@@ -107,6 +115,15 @@
       <div class="equipment-bar">
         <span>Alternativlər üçün avadanlıq:</span>
         <button class="compact-btn" id="equipmentBtn">Hamısı</button>
+      </div>
+      <div class="rest-timer card" id="restTimerCard">
+        <div><div class="eyebrow">REST TIMER</div><div class="timer-value" id="restTimerValue">Hazır</div><div class="sub" id="restTimerHint">Set saxlananda avtomatik başlaya bilər.</div></div>
+        <div class="timer-actions">
+          <button data-rest="75">75 san</button>
+          <button data-rest="150">2:30</button>
+          <button data-rest="180">3:00</button>
+          <button id="restStop">Stop</button>
+        </div>
       </div>
       <div class="progress"><span id="workoutBar"></span></div>
       <div class="card" id="exerciseList"></div>
@@ -180,5 +197,6 @@
 <script src="app.js"></script>
 <script src="enhancements.js"></script>
 <script src="v12.js"></script>
+<script src="v13.js"></script>
 </body>
 </html>
