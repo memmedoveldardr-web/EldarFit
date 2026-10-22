@@ -168,7 +168,8 @@
       }else{
         const b=parent.querySelector('.skip-food[data-for="'+CSS.escape(chip.dataset.v12key||'')+'"]');
         b.classList.toggle('skipped',!!sk[key]);
-        b.textContent=sk[key]?'↩ Geri al':'⊘ Yemədim';
+        const wanted=sk[key]?'↩ Geri al':'⊘ Yemədim';
+        if(b.textContent!==wanted)b.textContent=wanted;
       }
     });
     refreshDaySummary();
