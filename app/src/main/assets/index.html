@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="az">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#f6f7f9" />
+  <title>Eldar Fit</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <div>
+      <div class="eyebrow">RECOMP DASHBOARD</div>
+      <h1>Eldar Fit</h1>
+    </div>
+    <div class="status-chip" id="todayChip">Bugün</div>
+  </header>
+
+  <main>
+    <section class="page active" data-page="home">
+      <div class="hero card">
+        <div>
+          <div class="eyebrow">GÜNLÜK HƏDƏF</div>
+          <div class="hero-number">2350–2400 <span>kcal</span></div>
+          <div class="sub">Protein: <b>140–155 q</b> · Recomp rejimi</div>
+        </div>
+        <div class="ring" aria-label="Recomposition hədəfi"><div>69–70<span>kq</span></div></div>
+      </div>
+
+      <div class="two-col">
+        <div class="card metric-card"><div class="label">7 günlük orta</div><div class="metric" id="avgWeight">—</div><div class="sub">çəki</div></div>
+        <div class="card metric-card"><div class="label">Son bel</div><div class="metric" id="lastWaist">—</div><div class="sub">sm</div></div>
+      </div>
+
+      <div class="card">
+        <div class="section-head"><div><div class="eyebrow">ÖLÇÜLƏR</div><h2>Bugünkü qeyd</h2></div><button class="text-btn" id="clearMeasurements">Tarixçəni sil</button></div>
+        <div class="form-grid">
+          <label>Çəki, kq<input id="weightInput" type="number" inputmode="decimal" min="40" max="200" step="0.05" placeholder="69.70"></label>
+          <label>Bel, sm<input id="waistInput" type="number" inputmode="decimal" min="50" max="160" step="0.1" placeholder="90.0"></label>
+        </div>
+        <label class="full-label">Qeyd<input id="measureNoteInput" type="text" maxlength="80" placeholder="məs: səhər, tualetdən sonra"></label>
+        <button class="primary" id="saveMeasurement">Qeydi saxla</button>
+        <div class="chart-wrap"><canvas id="measureChart" width="700" height="250" aria-label="Çəki və bel trendi"></canvas></div>
+        <div id="measureHistory" class="history"></div>
+      </div>
+
+      <div class="card tip-card">
+        <div class="tip-icon">↗</div>
+        <div><b>İzlədiyimiz siqnal</b><div class="sub">7 günlük orta çəki sabit + bel tədricən aşağı + güc yuxarı = plan işləyir.</div></div>
+      </div>
+    </section>
+
+    <section class="page" data-page="food">
+      <div class="section-head sticky-head"><div><div class="eyebrow">7 GÜNLÜK PLAN</div><h2 id="foodTitle">1-ci gün</h2></div><div class="progress-label" id="mealProgress">0/5</div></div>
+      <div class="day-tabs" id="dayTabs"></div>
+      <div class="progress"><span id="mealBar"></span></div>
+      <div class="card" id="mealList"></div>
+      <div class="card">
+        <h3>Sürətli əvəzləmələr</h3>
+        <div class="swap-grid">
+          <div><b>Yunan yoqurtu</b><span>30 q whey</span></div>
+          <div><b>85 q bulqur</b><span>≈85 q Borges makaron</span></div>
+          <div><b>120 q banan</b><span>≈180–200 q alma</span></div>
+          <div><b>Kəsmik</b><span>whey / yoqurt / yumurta</span></div>
+        </div>
+        <p class="fineprint">Taxıllar quru çəkidə; ət/balıq/kartof əsasən çiy çəkidədir. 10 q zeytun yağı ≈ 90 kcal.</p>
+      </div>
+    </section>
+
+    <section class="page" data-page="workout">
+      <div class="section-head sticky-head"><div><div class="eyebrow">3 GÜNLÜK FULL BODY</div><h2 id="workoutTitle">Gün A</h2></div><div class="progress-label" id="workoutProgress">0/8</div></div>
+      <div class="day-tabs" id="workoutTabs"></div>
+      <div class="progress"><span id="workoutBar"></span></div>
+      <div class="card" id="exerciseList"></div>
+      <div class="three-col">
+        <div class="card mini"><div class="label">Compound</div><b>RIR 1–3</b></div>
+        <div class="card mini"><div class="label">İstirahət</div><b>2–3 dəq</b></div>
+        <div class="card mini"><div class="label">İzolyasiya</div><b>60–90 san</b></div>
+      </div>
+      <div class="card"><h3>Progressive overload</h3><p class="sub">Məsələn 3×8–12-də eyni çəki ilə 12/12/12 və təmiz texnika əldə etdikdə növbəti məşqdə çəkini azca artır.</p></div>
+    </section>
+
+    <section class="page" data-page="muscles">
+      <div class="section-head"><div><div class="eyebrow">HƏFTƏLİK YÜK XƏRİTƏSİ</div><h2>Əzələ modeli</h2></div></div>
+      <div class="day-tabs" id="muscleFilters">
+        <button class="active" data-filter="all">Hamısı</button><button data-filter="A">A</button><button data-filter="B">B</button><button data-filter="C">C</button>
+      </div>
+      <div class="card body-card">
+        <div class="figures">
+          <svg viewBox="0 0 250 610" role="img" aria-label="Ön əzələ xəritəsi">
+            <text x="125" y="18" class="svg-label">ÖN</text><ellipse class="body-base" cx="125" cy="55" rx="34" ry="38"/><rect class="body-base" x="111" y="86" width="28" height="24" rx="9"/>
+            <path class="body-base" d="M88 104 Q65 110 55 138 L62 255 Q70 285 77 318 L72 500 L105 500 L118 324 L132 324 L145 500 L178 500 L173 318 Q180 285 188 255 L195 138 Q185 110 162 104 Z"/>
+            <path class="body-base" d="M62 126 Q39 139 35 185 L25 298 L47 302 L66 197 Z"/><path class="body-base" d="M188 126 Q211 139 215 185 L225 298 L203 302 L184 197 Z"/>
+            <path class="muscle mid" data-muscle="upperchest" d="M87 128 Q103 111 123 119 L123 151 Q104 153 88 145 Z"/><path class="muscle mid" data-muscle="upperchest" d="M163 128 Q147 111 127 119 L127 151 Q146 153 162 145 Z"/>
+            <path class="muscle very" data-muscle="midchest" d="M88 146 Q106 151 123 153 L123 184 Q101 185 84 168 Z"/><path class="muscle very" data-muscle="midchest" d="M162 146 Q144 151 127 153 L127 184 Q149 185 166 168 Z"/>
+            <path class="muscle high" data-muscle="lowerchest" d="M84 168 Q102 184 123 185 L123 203 Q101 203 87 191 Z"/><path class="muscle high" data-muscle="lowerchest" d="M166 168 Q148 184 127 185 L127 203 Q149 203 163 191 Z"/>
+            <ellipse class="muscle high" data-muscle="antdelts" cx="79" cy="128" rx="19" ry="18"/><ellipse class="muscle high" data-muscle="antdelts" cx="171" cy="128" rx="19" ry="18"/>
+            <path class="muscle high" data-muscle="latdelts" d="M61 127 Q45 141 48 166 Q62 177 72 158 L73 137 Z"/><path class="muscle high" data-muscle="latdelts" d="M189 127 Q205 141 202 166 Q188 177 178 158 L177 137 Z"/>
+            <path class="muscle high" data-muscle="biceps" d="M54 161 Q45 183 50 217 Q60 224 67 207 L68 168 Z"/><path class="muscle high" data-muscle="biceps" d="M196 161 Q205 183 200 217 Q190 224 183 207 L182 168 Z"/>
+            <path class="muscle mid" data-muscle="forearms" d="M50 220 Q59 230 67 221 L58 294 L40 294 Z"/><path class="muscle mid" data-muscle="forearms" d="M200 220 Q191 230 183 221 L192 294 L210 294 Z"/>
+            <path class="muscle mid" data-muscle="abs" d="M103 201 L147 201 L149 275 Q125 289 101 275 Z"/>
+            <path class="muscle very" data-muscle="quads" d="M78 300 Q98 287 116 300 L109 412 Q92 430 76 407 Z"/><path class="muscle very" data-muscle="quads" d="M172 300 Q152 287 134 300 L141 412 Q158 430 174 407 Z"/>
+            <path class="muscle mid" data-muscle="calves" d="M78 420 Q93 409 105 425 L100 493 L79 493 Z"/><path class="muscle mid" data-muscle="calves" d="M172 420 Q157 409 145 425 L150 493 L171 493 Z"/>
+          </svg>
+          <svg viewBox="0 0 250 610" role="img" aria-label="Arxa əzələ xəritəsi">
+            <text x="125" y="18" class="svg-label">ARXA</text><ellipse class="body-base" cx="125" cy="55" rx="34" ry="38"/><rect class="body-base" x="111" y="86" width="28" height="24" rx="9"/>
+            <path class="body-base" d="M88 104 Q65 110 55 138 L62 255 Q70 285 77 318 L72 500 L105 500 L118 324 L132 324 L145 500 L178 500 L173 318 Q180 285 188 255 L195 138 Q185 110 162 104 Z"/>
+            <path class="body-base" d="M62 126 Q39 139 35 185 L25 298 L47 302 L66 197 Z"/><path class="body-base" d="M188 126 Q211 139 215 185 L225 298 L203 302 L184 197 Z"/>
+            <path class="muscle mid" data-muscle="traps" d="M96 103 Q125 91 154 103 L143 136 Q125 128 107 136 Z"/><path class="muscle high" data-muscle="midback" d="M91 134 Q125 123 159 134 L149 175 Q125 187 101 175 Z"/>
+            <ellipse class="muscle high" data-muscle="reardelts" cx="78" cy="128" rx="19" ry="18"/><ellipse class="muscle high" data-muscle="reardelts" cx="172" cy="128" rx="19" ry="18"/>
+            <path class="muscle very" data-muscle="lats" d="M81 148 Q100 157 112 177 L104 248 Q82 237 72 198 Z"/><path class="muscle very" data-muscle="lats" d="M169 148 Q150 157 138 177 L146 248 Q168 237 178 198 Z"/>
+            <path class="muscle high" data-muscle="triceps" d="M54 157 Q44 184 50 221 Q60 227 67 209 L67 167 Z"/><path class="muscle high" data-muscle="triceps" d="M196 157 Q206 184 200 221 Q190 227 183 209 L183 167 Z"/>
+            <path class="muscle mid" data-muscle="erectors" d="M109 204 L122 204 L121 278 L107 278 Z"/><path class="muscle mid" data-muscle="erectors" d="M128 204 L141 204 L143 278 L129 278 Z"/>
+            <ellipse class="muscle very" data-muscle="glutes" cx="101" cy="291" rx="28" ry="31"/><ellipse class="muscle very" data-muscle="glutes" cx="149" cy="291" rx="28" ry="31"/>
+            <path class="muscle high" data-muscle="hamstrings" d="M77 320 Q94 306 111 319 L104 414 Q87 425 75 402 Z"/><path class="muscle high" data-muscle="hamstrings" d="M173 320 Q156 306 139 319 L146 414 Q163 425 175 402 Z"/>
+            <path class="muscle mid" data-muscle="calves" d="M77 420 Q93 408 105 424 L99 493 L78 493 Z"/><path class="muscle mid" data-muscle="calves" d="M173 420 Q157 408 145 424 L151 493 L172 493 Z"/>
+          </svg>
+        </div>
+        <div class="legend"><span><i class="dot very-dot"></i>çox yüksək</span><span><i class="dot high-dot"></i>yüksək</span><span><i class="dot mid-dot"></i>orta</span><span><i class="dot low-dot"></i>aşağı</span></div>
+      </div>
+      <div class="card muscle-detail"><div class="eyebrow">SEÇİLMİŞ ƏZƏLƏ</div><h2 id="muscleName">Latissimus dorsi</h2><div class="hero-number small" id="muscleLoad">Çox yüksək</div><div class="sub" id="muscleFreq">3× stimul / həftə</div><p id="muscleDesc"></p></div>
+      <div class="muscle-list" id="muscleList"></div>
+      <p class="fineprint">Rənglər EMG faizi deyil; proqramdakı birbaşa setlər + əsas/dolayı iştirak əsasında nisbi həftəlik yükü göstərir.</p>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="active" data-nav="home"><span>⌂</span>İcmal</button>
+    <button data-nav="food"><span>◫</span>Qida</button>
+    <button data-nav="workout"><span>◆</span>Məşq</button>
+    <button data-nav="muscles"><span>◉</span>Əzələlər</button>
+  </nav>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
