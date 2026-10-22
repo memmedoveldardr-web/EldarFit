@@ -19,6 +19,7 @@ jobs:
         run: |
           node --check app/src/main/assets/app.js
           node --check app/src/main/assets/enhancements.js
+          node --check app/src/main/assets/v12.js
       - run: gradle assembleDebug
       - uses: actions/upload-artifact@v4
         with:
