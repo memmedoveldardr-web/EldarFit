@@ -68,6 +68,20 @@
       </div>
       <div class="day-tabs" id="dayTabs"></div>
       <div class="progress"><span id="mealBar"></span></div>
+
+      <div class="card macro-card">
+        <div class="section-head">
+          <div><div class="eyebrow">CANLI MAKROLAR</div><h2>Günün hesabı</h2></div>
+          <button class="text-btn" id="macroModeBtn">Ən yaxın makro</button>
+        </div>
+        <div class="macro-grid">
+          <div><span>kcal</span><b id="macroKcal">—</b><small id="remainKcal">—</small></div>
+          <div><span>Protein</span><b id="macroProtein">—</b><small id="remainProtein">—</small></div>
+          <div><span>Karbohidrat</span><b id="macroCarbs">—</b><small>günlük cəm</small></div>
+          <div><span>Yağ</span><b id="macroFat">—</b><small>günlük cəm</small></div>
+        </div>
+      </div>
+
       <div class="card" id="mealList"></div>
       <div class="card">
         <h3>Ağıllı əvəzləmə</h3>
@@ -75,8 +89,12 @@
         <div class="swap-grid">
           <div><b>Protein</b><span>ət · balıq · süd məhsulu · whey</span></div>
           <div><b>Karbohidrat</b><span>düyü · bulqur · makaron · kartof</span></div>
-          <div><b>Meyvə</b><span>miqdarı uyğunlaşdırılmış seçim</span></div>
+          <div><b>Meyvə</b><span>qramı avtomatik hesablanır</span></div>
           <div><b>Yağ</b><span>zeytun yağı · qoz-fındıq</span></div>
+        </div>
+        <div class="tool-row">
+          <button class="secondary" id="inventoryBtn">🏠 Evdə olanlar</button>
+          <button class="secondary" id="customFoodBtn">＋ Öz məhsulunu əlavə et</button>
         </div>
         <div class="progress-note">Həftə avtomatik hesablanır: Bazar ertəsi = 1-ci gün · Çərşənbə = 3-cü gün · Cümə = 5-ci gün.</div>
         <p class="fineprint">Taxıllar quru çəkidə; ət/balıq/kartof əsasən çiy çəkidədir. Sistem yalnız tarixdən istifadə edir — Calendar icazəsi tələb olunmur.</p>
@@ -86,6 +104,10 @@
     <section class="page" data-page="workout">
       <div class="section-head sticky-head"><div><div class="eyebrow">3 GÜNLÜK FULL BODY</div><h2 id="workoutTitle">Gün A</h2></div><div class="progress-label" id="workoutProgress">0/8</div></div>
       <div class="day-tabs" id="workoutTabs"></div>
+      <div class="equipment-bar">
+        <span>Alternativlər üçün avadanlıq:</span>
+        <button class="compact-btn" id="equipmentBtn">Hamısı</button>
+      </div>
       <div class="progress"><span id="workoutBar"></span></div>
       <div class="card" id="exerciseList"></div>
       <div class="three-col">
