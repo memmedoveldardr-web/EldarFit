@@ -13,22 +13,9 @@
     const day = String(d.getDate()).padStart(2, '0');
     return y + '-' + m + '-' + day;
   }
-  function localMidnight(d) {
-    const x = new Date(d);
-    return new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime();
-  }
-  function ensureAnchor() {
-    let anchor = get('planAnchor_v11', null);
-    if (!anchor) {
-      anchor = isoDate();
-      set('planAnchor_v11', anchor);
-    }
-    return anchor;
-  }
   function autoDayIndex() {
-    const anchor = ensureAnchor();
-    const diff = Math.round((localMidnight(new Date()) - localMidnight(new Date(anchor + 'T12:00:00'))) / 86400000);
-    return ((diff % 7) + 7) % 7;
+    const jsDay = new Date().getDay(); // Sun=0, Mon=1 ... Sat=6
+    return (jsDay + 6) % 7;           // Mon=0 ... Sun=6
   }
   function workoutForPlanDay(dayIndex) {
     return dayIndex === 0 ? 'A' : dayIndex === 2 ? 'B' : dayIndex === 4 ? 'C' : null;
@@ -92,11 +79,6 @@
   }
 
   $('#jumpTodayFood').addEventListener('click', applyAutoDay);
-  $('#resetPlanAnchor').addEventListener('click', function() {
-    set('planAnchor_v11', isoDate());
-    applyAutoDay();
-    alert('Bugün 1-ci plan günü kimi təyin edildi.');
-  });
 
   const foodAlternatives = [
     {re:/yumurta/i, opts:[
